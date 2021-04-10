@@ -1,21 +1,18 @@
-extern crate bindgen;
-
 use autotools;
+use bindgen;
 use std::env;
 use std::path::PathBuf;
-use std::process::Command;
 
 fn main() {
-    Command::new("./bootstrap")
-        .current_dir("include/bgpq4")
-        .output()
-        .expect("failed to run bgpq4 bootstrap script");
+    let dst = autotools::Config::new("include/bgpq4")
+        .reconf("-ivf")
+        .build();
 
-    let dst = autotools::build("include/bgpq4");
-
-    // Tell cargo to tell rustc to link the system bzip2
+    // Tell cargo to tell rustc to link the system bgpq4
     // shared library.
     println!("cargo:rustc-link-search=native={}", dst.display());
+    println!("cargo:rustc-link-lib=static=bgpq4");
+
     // Tell Cargo that if the given file changes, to rerun this build script.
     println!("cargo:rerun-if-changed=include/bgpq4/bgpq4.c");
 
