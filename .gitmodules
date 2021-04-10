@@ -1,0 +1,3 @@
+[submodule "include/bgpq4"]
+	path = include/bgpq4
+	url = https://github.com/bgp/bgpq4.git
